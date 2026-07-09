@@ -1,2 +1,1874 @@
-# SEP
-teste 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Inteligente · Complexo Eólico Babilônia</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --bg-card: #181818;
+    --bg-elevated: #1e1e1e;
+    --bg-hover: #252525;
+    --fg: #e8e8e8;
+    --fg-soft: #b0b0b0;
+    --fg-muted: #707070;
+    --primary: #c8a04a;
+    --primary-soft: #d4b87a;
+    --primary-dim: #8a6e30;
+    --accent: #4a9c8a;
+    --accent-soft: #6ab8a6;
+    --alert: #c85a4a;
+    --alert-soft: #e88a7a;
+    --success: #5a9c6a;
+    --border: #2a2a2a;
+    --border-soft: #333333;
+  }
+  * { -webkit-font-smoothing: antialiased; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    overflow-x: hidden;
+  }
+  .font-display { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.015em; }
+  
+  .hero-bg {
+    background-image: 
+      linear-gradient(180deg, rgba(15,15,15,0.5) 0%, rgba(15,15,15,0.75) 60%, rgba(15,15,15,0.98) 100%),
+      url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .section-bg-1 {
+    background-image:
+      linear-gradient(135deg, rgba(15,15,15,0.92) 0%, rgba(15,15,15,0.85) 100%),
+      url('https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .section-bg-2 {
+    background-image:
+      linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(15,15,15,0.88) 100%),
+      url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .closing-bg {
+    background-image:
+      linear-gradient(135deg, rgba(10,10,10,0.93) 0%, rgba(15,15,15,0.96) 100%),
+      url('https://images.unsplash.com/photo-1559302504-64aae6ca6b6d?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .nav-link {
+    position: relative;
+    color: var(--fg-soft);
+    transition: color 0.2s;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--primary);
+    transition: width 0.3s;
+  }
+  .nav-link:hover { color: var(--fg); }
+  .nav-link:hover::after { width: 100%; }
+  .nav-link.active { color: var(--primary); }
+  .nav-link.active::after { width: 100%; }
+  
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .card-hover:hover {
+    border-color: var(--border-soft);
+    background: var(--bg-elevated);
+  }
+  
+  .hotspot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #0f0f0f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 0 3px rgba(15,15,15,0.8), 0 0 20px rgba(200,160,74,0.4);
+    transition: transform 0.2s, background 0.2s;
+    z-index: 10;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .hotspot::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid var(--primary);
+    opacity: 0.5;
+    animation: pulse 2.5s infinite;
+  }
+  .hotspot:hover, .hotspot.active {
+    transform: scale(1.1);
+    background: var(--accent);
+  }
+  .hotspot:hover::before, .hotspot.active::before { border-color: var(--accent); }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.5); opacity: 0; }
+  }
+  
+  .side-panel {
+    position: fixed;
+    top: 0;
+    right: -520px;
+    width: 460px;
+    max-width: 100vw;
+    height: 100vh;
+    background: var(--bg-card);
+    border-left: 1px solid var(--border);
+    z-index: 100;
+    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+  .side-panel.open { right: 0; }
+  .panel-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .panel-backdrop.open { opacity: 1; pointer-events: all; }
+  
+  .flow-line {
+    stroke-dasharray: 5 5;
+    animation: flow 2s linear infinite;
+  }
+  @keyframes flow { to { stroke-dashoffset: -20; } }
+  
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  
+  .btn {
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: #0f0f0f;
+  }
+  .btn-primary:hover {
+    background: var(--primary-soft);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border-soft);
+  }
+  .btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .pill-success { background: rgba(90,156,106,0.15); color: var(--success); }
+  .pill-alert { background: rgba(200,90,74,0.15); color: var(--alert-soft); }
+  .pill-info { background: rgba(200,160,74,0.12); color: var(--primary); }
+  .pill-accent { background: rgba(74,156,138,0.15); color: var(--accent-soft); }
+  
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .dot-live { animation: blink 2s infinite; }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: var(--primary);
+    z-index: 50;
+    width: 0;
+    transition: width 0.1s;
+  }
+  
+  .live-num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  
+  .period-btn {
+    padding: 6px 14px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--fg-soft);
+    cursor: pointer;
+  }
+  .period-btn:hover { border-color: var(--border-soft); color: var(--fg); }
+  .period-btn.active {
+    background: var(--primary);
+    color: #0f0f0f;
+    border-color: var(--primary);
+  }
+  
+  .compare-row {
+    transition: background 0.3s;
+  }
+  
+  .park-card {
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .park-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+  .park-card.selected {
+    border-color: var(--primary);
+    background: var(--bg-elevated);
+  }
+  
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
+  
+  section { scroll-margin-top: 70px; }
+  
+  .divider {
+    height: 1px;
+    background: var(--border);
+  }
+  
+  .data-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  
+  .img-fade-bottom {
+    -webkit-mask-image: linear-gradient(180deg, black 60%, transparent 100%);
+    mask-image: linear-gradient(180deg, black 60%, transparent 100%);
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero-bg relative min-h-screen flex flex-col">
+  <nav class="relative z-20 px-6 lg:px-12 py-5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded flex items-center justify-center" style="background: var(--primary);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="2.2" class="w-4 h-4">
+          <path d="M12 2v20M12 8l5-2M12 8l-5-2M12 14l7 2M12 14l-7 2"/>
+        </svg>
+      </div>
+      <div>
+        <div class="font-display font-bold text-sm leading-tight text-white">BABILÔNIA</div>
+        <div class="text-[10px] leading-tight tracking-wider uppercase" style="color: var(--fg-muted);">Operação Inteligente</div>
+      </div>
+    </div>
+    
+    <div class="hidden lg:flex items-center gap-6">
+      <a href="#desafio" class="nav-link">Desafio</a>
+      <a href="#solucao" class="nav-link">Solução</a>
+      <a href="#curtailment" class="nav-link">Curtailment</a>
+      <a href="#historico" class="nav-link">Histórico</a>
+      <a href="#parques" class="nav-link">Parques</a>
+      <a href="#beneficios" class="nav-link">Benefícios</a>
+    </div>
+    
+    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded" style="background: rgba(90,156,106,0.1); border: 1px solid rgba(90,156,106,0.2);">
+      <span class="dot dot-live" style="color: var(--success);"></span>
+      <span class="text-[10px] font-bold tracking-wider uppercase" style="color: var(--success);">Sistema Online</span>
+    </div>
+  </nav>
+
+  <div class="relative z-10 flex-1 flex items-center px-6 lg:px-12 pb-12">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded mb-6" style="background: rgba(200,160,74,0.1); border: 1px solid rgba(200,160,74,0.2);">
+        <span class="dot dot-live" style="color: var(--primary);"></span>
+        <span class="text-[10px] font-bold tracking-wider uppercase" style="color: var(--primary);">SAGE × Sinapse ONS · Tempo Real</span>
+      </div>
+      
+      <h1 class="font-display font-bold text-4xl lg:text-6xl leading-[1.05] mb-6 text-white">
+        Sistema Inteligente<br>
+        de Apoio à <span style="color: var(--primary);">Operação</span>
+      </h1>
+      
+      <p class="text-base lg:text-lg mb-8 max-w-2xl leading-relaxed" style="color: var(--fg-soft);">
+        Integração entre o Sistema Supervisório SAGE e APIs operacionais para 
+        monitoramento inteligente, em tempo real, do Complexo Eólico Babilônia.
+      </p>
+      
+      <div class="flex flex-wrap gap-3 mb-12">
+        <a href="#desafio" class="btn btn-primary px-6 py-3 rounded inline-flex items-center gap-2">
+          Iniciar Demonstração
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#arquitetura" class="btn btn-outline px-6 py-3 rounded inline-flex items-center gap-2">
+          Ver Arquitetura
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-3 gap-8 max-w-xl pt-8" style="border-top: 1px solid var(--border);">
+        <div>
+          <div class="text-2xl lg:text-3xl font-display font-bold live-num text-white" id="heroGen">39.9</div>
+          <div class="data-label mt-1">MW · Geração</div>
+        </div>
+        <div>
+          <div class="text-2xl lg:text-3xl font-display font-bold live-num" style="color: var(--primary);" id="heroCap">28.9</div>
+          <div class="data-label mt-1">% Fator</div>
+        </div>
+        <div>
+          <div class="text-2xl lg:text-3xl font-display font-bold live-num" style="color: var(--success);" id="heroTurb">65/65</div>
+          <div class="data-label mt-1">Aerogeradores</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="relative z-10 px-6 lg:px-12 pb-6">
+    <div class="flex items-center gap-4">
+      <div class="flex-1" style="height: 1px; background: var(--border);"></div>
+      <div class="text-[10px] font-semibold tracking-wider uppercase" style="color: var(--fg-muted);">Role para explorar</div>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--fg-muted);">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESAFIO ============ -->
+<section id="desafio" class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 reveal">
+        <div class="pill pill-alert mb-4">
+          <span>01 · O Problema</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-6 text-white">
+          Desafio Operacional
+        </h2>
+        <p class="text-base leading-relaxed mb-6" style="color: var(--fg-soft);">
+          O operador precisava acompanhar, simultaneamente, diversas fontes de informação 
+          dispersas para tomar decisões em tempo real.
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(200,90,74,0.15);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color: var(--alert);"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <p class="text-sm" style="color: var(--fg-soft);">Maior tempo de análise e possibilidade de erro humano</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(200,90,74,0.15);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color: var(--alert);"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <p class="text-sm" style="color: var(--fg-soft);">Aplicação incorreta de restrições e perda de geração</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(200,90,74,0.15);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color: var(--alert);"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <p class="text-sm" style="color: var(--fg-soft);">Descumprimento de Procedimentos de Rede do ONS</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style="background: rgba(200,90,74,0.15);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="color: var(--alert);"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <p class="text-sm" style="color: var(--fg-soft);">Elevada carga cognitiva do operador</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-7 reveal">
+        <div class="card p-8 lg:p-10 relative">
+          <div class="data-label mb-6">Sistemas dispersos · Antes</div>
+          
+          <div class="relative h-[400px]">
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+              <g stroke="#c85a4a" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="3 3">
+                <path d="M100 50 Q300 100 460 200"/>
+                <path d="M100 120 Q300 150 460 200"/>
+                <path d="M100 190 Q300 200 460 200"/>
+                <path d="M100 260 Q300 250 460 200"/>
+                <path d="M100 330 Q300 300 460 200"/>
+                <path d="M260 50 Q360 120 460 200"/>
+                <path d="M260 350 Q360 280 460 200"/>
+              </g>
+            </svg>
+            
+            <div class="absolute" style="left: 0; top: 6%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">SAGE</div>
+            </div>
+            <div class="absolute" style="left: 0; top: 26%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Sinapse · ONS</div>
+            </div>
+            <div class="absolute" style="left: 0; top: 46%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Instruções Operativas</div>
+            </div>
+            <div class="absolute" style="left: 0; top: 66%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Disponibilidade</div>
+            </div>
+            <div class="absolute" style="left: 0; top: 86%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Histórico</div>
+            </div>
+            
+            <div class="absolute" style="left: 38%; top: 4%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Limites Operativos</div>
+            </div>
+            <div class="absolute" style="left: 38%; top: 92%;">
+              <div class="px-3 py-1.5 rounded text-xs font-semibold border" style="background: var(--bg-elevated); border-color: var(--alert); color: var(--alert-soft);">Curtailment</div>
+            </div>
+            
+            <div class="absolute" style="left: 72%; top: 50%; transform: translateY(-50%);">
+              <div class="relative">
+                <div class="w-28 h-28 rounded-full flex items-center justify-center" style="background: var(--bg-elevated); border: 2px solid var(--alert);">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--fg-soft);">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M4 22c0-4 4-7 8-7s8 3 8 7"/>
+                  </svg>
+                </div>
+                <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-2.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap" style="background: var(--alert); color: white;">OPERADOR</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4 pt-4 flex items-center justify-between text-xs" style="border-top: 1px solid var(--border); color: var(--fg-muted);">
+            <span>Informações dispersas · Análise manual</span>
+            <span class="font-bold" style="color: var(--alert-soft);">Alto risco operacional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SOLUÇÃO ============ -->
+<section id="solucao" class="section-bg-1 py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-success mb-4 inline-flex">
+        <span>02 · A Solução</span>
+      </div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Tudo em uma única interface
+      </h2>
+      <p class="text-base max-w-2xl mx-auto" style="color: var(--fg-soft);">
+        Centralizamos todas as informações críticas da operação em um dashboard inteligente.
+        Clique nos pontos destacados para explorar cada funcionalidade.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <div class="card p-6 lg:p-8 relative" id="dashboardMockup">
+        <div class="flex items-center justify-between mb-6 pb-4" style="border-bottom: 1px solid var(--border);">
+          <div>
+            <div class="font-display font-bold text-lg text-white">Complexo Babilônia</div>
+            <div class="text-xs" style="color: var(--fg-muted);">Monitoramento em tempo real · Atualizado há 2s</div>
+          </div>
+          <span class="pill pill-success"><span class="dot dot-live"></span>Operação Normal</span>
+        </div>
+        
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--primary); color: #0f0f0f;">Geral</div>
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--bg-elevated); color: var(--fg-soft); border: 1px solid var(--border);">Santa Beatriz</div>
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--bg-elevated); color: var(--fg-soft); border: 1px solid var(--border);">São Roque</div>
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--bg-elevated); color: var(--fg-soft); border: 1px solid var(--border);">Boa Vista</div>
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--bg-elevated); color: var(--fg-soft); border: 1px solid var(--border);">Santa Tereza</div>
+          <div class="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap" style="background: var(--bg-elevated); color: var(--fg-soft); border: 1px solid var(--border);">Bom Pastor</div>
+        </div>
+        
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-1">Sinapse · ONS</div>
+            <div class="text-xl font-display font-bold live-num text-white">43.0 MW</div>
+            <div class="text-[10px] mt-1" style="color: var(--fg-muted);">Setpoint solicitado</div>
+          </div>
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-1">SAGE · SCADA</div>
+            <div class="text-xl font-display font-bold live-num" style="color: var(--primary);">43.0 MW</div>
+            <div class="text-[10px] mt-1" style="color: var(--success);">Aplicado corretamente</div>
+          </div>
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-1">Geração Total</div>
+            <div class="text-xl font-display font-bold live-num text-white">39.9 MW</div>
+            <div class="text-[10px] mt-1" style="color: var(--fg-muted);">5 parques · 65 aerogeradores</div>
+          </div>
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-1">Fator de Capacidade</div>
+            <div class="text-xl font-display font-bold live-num" style="color: var(--accent-soft);">28.9%</div>
+            <div class="text-[10px] mt-1" style="color: var(--fg-muted);">Acima da meta mínima</div>
+          </div>
+        </div>
+        
+        <div class="grid lg:grid-cols-3 gap-3 mb-6">
+          <div class="lg:col-span-2 p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <div class="data-label">Evolução · Últimas 24h</div>
+              <div class="flex gap-3 text-[10px]" style="color: var(--fg-soft);">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm" style="background: var(--primary);"></span>Geração</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm" style="background: var(--accent);"></span>Restrição</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm" style="background: var(--alert);"></span>Solicitado</span>
+              </div>
+            </div>
+            <div class="h-28 flex items-end gap-1" id="miniChart"></div>
+            <div class="flex justify-between text-[9px] mt-2" style="color: var(--fg-muted);">
+              <span>00h</span><span>06h</span><span>12h</span><span>18h</span><span>24h</span>
+            </div>
+          </div>
+          <div class="p-4 rounded-lg flex flex-col justify-between" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label">Modo de Controle</div>
+            <div>
+              <div class="text-sm font-display font-bold text-white">CONTROLE DE TENSÃO</div>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="dot dot-live" style="color: var(--success);"></span>
+                <span class="text-[10px] font-semibold" style="color: var(--success);">Conforme procedimento</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid lg:grid-cols-2 gap-3">
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-3">Aerogeradores · Disponibilidade</div>
+            <div class="grid grid-cols-5 gap-2">
+              <div class="text-center">
+                <div class="text-sm font-display font-bold text-white">13/13</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">AC03</div>
+              </div>
+              <div class="text-center">
+                <div class="text-sm font-display font-bold text-white">13/13</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">AC04</div>
+              </div>
+              <div class="text-center">
+                <div class="text-sm font-display font-bold" style="color: var(--primary);">12/13</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">AC05</div>
+              </div>
+              <div class="text-center">
+                <div class="text-sm font-display font-bold text-white">13/13</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">AC06</div>
+              </div>
+              <div class="text-center">
+                <div class="text-sm font-display font-bold text-white">13/13</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">AC07</div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+            <div class="data-label mb-3">Dados Elétricos</div>
+            <div class="grid grid-cols-3 gap-3 text-center">
+              <div>
+                <div class="text-sm font-display font-bold text-white">69.2 kV</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">Tensão</div>
+              </div>
+              <div>
+                <div class="text-sm font-display font-bold text-white">0.98</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">Fator Pot.</div>
+              </div>
+              <div>
+                <div class="text-sm font-display font-bold text-white">8.4 MVAr</div>
+                <div class="text-[9px]" style="color: var(--fg-muted);">Pot. Reativa</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button class="hotspot" style="left: 8%; top: 38%;" data-hotspot="1">1</button>
+        <button class="hotspot" style="left: 28%; top: 38%;" data-hotspot="2">2</button>
+        <button class="hotspot" style="left: 48%; top: 38%;" data-hotspot="3">3</button>
+        <button class="hotspot" style="left: 82%; top: 60%;" data-hotspot="4">4</button>
+        <button class="hotspot" style="left: 25%; top: 62%;" data-hotspot="5">5</button>
+        <button class="hotspot" style="left: 12%; top: 80%;" data-hotspot="6">6</button>
+        <button class="hotspot" style="left: 60%; top: 80%;" data-hotspot="7">7</button>
+      </div>
+      
+      <div class="flex items-center justify-center gap-2 mt-6 text-xs" style="color: var(--fg-muted);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+        </svg>
+        Clique nos pontos destacados para explorar cada funcionalidade
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARQUITETURA ============ -->
+<section id="arquitetura" class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="pill pill-info mb-4 inline-flex"><span>03 · Arquitetura</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Como os dados fluem
+      </h2>
+      <p class="text-base max-w-2xl mx-auto" style="color: var(--fg-soft);">
+        A página consulta continuamente o Sinapse e o SAGE, cruza os dados automaticamente 
+        e disponibiliza apenas a informação relevante ao operador.
+      </p>
+    </div>
+    
+    <div class="reveal">
+      <div class="card p-8 lg:p-12 overflow-x-auto">
+        <svg viewBox="0 0 1000 200" class="w-full min-w-[800px]" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#707070"/>
+            </marker>
+          </defs>
+          
+          <g stroke="#707070" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+            <path d="M150 100 L240 100" class="flow-line"/>
+            <path d="M350 100 L440 100" class="flow-line"/>
+            <path d="M550 100 L640 100" class="flow-line"/>
+            <path d="M750 100 L840 100" class="flow-line"/>
+            <path d="M895 100 L950 100" class="flow-line"/>
+          </g>
+          
+          <g transform="translate(50, 60)">
+            <rect width="100" height="80" rx="8" fill="#1e1e1e" stroke="#c8a04a" stroke-width="1.5"/>
+            <text x="50" y="35" text-anchor="middle" fill="#e8e8e8" font-family="Space Grotesk" font-weight="700" font-size="13">API</text>
+            <text x="50" y="52" text-anchor="middle" fill="#b0b0b0" font-family="Inter" font-size="11">Sinapse</text>
+            <text x="50" y="66" text-anchor="middle" fill="#707070" font-family="Inter" font-size="9">ONS</text>
+          </g>
+          
+          <g transform="translate(250, 60)">
+            <rect width="100" height="80" rx="8" fill="#1e1e1e" stroke="#4a9c8a" stroke-width="1.5"/>
+            <text x="50" y="35" text-anchor="middle" fill="#e8e8e8" font-family="Space Grotesk" font-weight="700" font-size="13">Servidor</text>
+            <text x="50" y="52" text-anchor="middle" fill="#b0b0b0" font-family="Inter" font-size="11">de Integração</text>
+          </g>
+          
+          <g transform="translate(450, 60)">
+            <rect width="100" height="80" rx="8" fill="#1e1e1e" stroke="#c8a04a" stroke-width="1.5"/>
+            <text x="50" y="35" text-anchor="middle" fill="#e8e8e8" font-family="Space Grotesk" font-weight="700" font-size="13">API</text>
+            <text x="50" y="52" text-anchor="middle" fill="#b0b0b0" font-family="Inter" font-size="11">SAGE</text>
+            <text x="50" y="66" text-anchor="middle" fill="#707070" font-family="Inter" font-size="9">SCADA</text>
+          </g>
+          
+          <g transform="translate(650, 60)">
+            <rect width="100" height="80" rx="8" fill="#c8a04a" stroke="#c8a04a" stroke-width="1.5"/>
+            <text x="50" y="35" text-anchor="middle" fill="#0f0f0f" font-family="Space Grotesk" font-weight="700" font-size="13">Motor</text>
+            <text x="50" y="52" text-anchor="middle" fill="#0f0f0f" font-family="Inter" font-size="11">de Cálculo</text>
+          </g>
+          
+          <g transform="translate(850, 60)">
+            <rect width="100" height="80" rx="8" fill="#1e1e1e" stroke="#4a9c8a" stroke-width="1.5"/>
+            <text x="50" y="35" text-anchor="middle" fill="#e8e8e8" font-family="Space Grotesk" font-weight="700" font-size="13">Página</text>
+            <text x="50" y="52" text-anchor="middle" fill="#b0b0b0" font-family="Inter" font-size="11">Web</text>
+          </g>
+          
+          <g transform="translate(950, 60)">
+            <circle cx="25" cy="40" r="35" fill="#1e1e1e" stroke="#c8a04a" stroke-width="1.5"/>
+            <text x="25" y="38" text-anchor="middle" fill="#e8e8e8" font-family="Inter" font-size="20">⚙</text>
+            <text x="25" y="58" text-anchor="middle" fill="#c8a04a" font-family="Inter" font-weight="700" font-size="9">Operador</text>
+          </g>
+        </svg>
+        
+        <div class="grid md:grid-cols-3 gap-4 mt-8 pt-8" style="border-top: 1px solid var(--border);">
+          <div>
+            <div class="data-label mb-2" style="color: var(--primary);">Coleta</div>
+            <p class="text-sm" style="color: var(--fg-soft);">APIs do Sinapse (ONS) e SAGE (SCADA) consultadas continuamente.</p>
+          </div>
+          <div>
+            <div class="data-label mb-2" style="color: var(--primary);">Processamento</div>
+            <p class="text-sm" style="color: var(--fg-soft);">Motor de cálculo cruza dados, compara valores e identifica divergências.</p>
+          </div>
+          <div>
+            <div class="data-label mb-2" style="color: var(--primary);">Entrega</div>
+            <p class="text-sm" style="color: var(--fg-soft);">Apenas a informação relevante é apresentada ao operador em tempo real.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CURTAILMENT ============ -->
+<section id="curtailment" class="section-bg-2 py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-accent mb-4 inline-flex"><span>04 · Funcionalidade Principal</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Controle Inteligente do Curtailment
+      </h2>
+      <p class="text-base max-w-2xl mx-auto" style="color: var(--fg-soft);">
+        Verificação contínua entre o valor solicitado pelo ONS e o setpoint aplicado no SAGE.
+      </p>
+    </div>
+    
+    <div class="grid lg:grid-cols-12 gap-8 items-start">
+      <div class="lg:col-span-7 reveal">
+        <div class="card p-8">
+          <div class="data-label mb-6">Comparação automática</div>
+          
+          <div class="grid grid-cols-3 gap-4 items-center">
+            <div class="text-center">
+              <div class="data-label mb-2">Sinapse · ONS</div>
+              <div class="p-4 rounded-lg" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+                <div class="text-2xl font-display font-bold live-num text-white">43.0</div>
+                <div class="text-[10px] font-semibold mt-1" style="color: var(--fg-muted);">MW solicitado</div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col items-center">
+              <svg width="50" height="30" viewBox="0 0 50 30" fill="none">
+                <path d="M5 15 L42 15 M34 7 L42 15 L34 23" stroke="#707070" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="text-[10px] font-bold tracking-wider uppercase mt-1" id="compareStatus" style="color: var(--success);">Sincronizado</div>
+            </div>
+            
+            <div class="text-center">
+              <div class="data-label mb-2">SAGE · SCADA</div>
+              <div class="p-4 rounded-lg" id="sageBox" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+                <div class="text-2xl font-display font-bold live-num" id="sageValue" style="color: var(--primary);">43.0</div>
+                <div class="text-[10px] font-semibold mt-1" style="color: var(--fg-muted);">MW aplicado</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 p-4 rounded-lg flex items-center justify-between" id="statusBanner" style="background: rgba(90,156,106,0.1); border: 1px solid rgba(90,156,106,0.2);">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded flex items-center justify-center" id="statusIcon" style="background: var(--success); color: white;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+              </div>
+              <div>
+                <div class="font-display font-bold text-sm" id="statusTitle" style="color: var(--success);">Valores coincidentes</div>
+                <div class="text-xs" id="statusDesc" style="color: var(--fg-soft);">Setpoint aplicado corretamente no SAGE</div>
+              </div>
+            </div>
+            <div class="pill pill-success" id="statusPill"><span class="dot dot-live"></span>OK</div>
+          </div>
+          
+          <div class="mt-6 flex items-center justify-between pt-6" style="border-top: 1px solid var(--border);">
+            <div class="text-xs" style="color: var(--fg-soft);">
+              <span class="font-bold">Simular divergência:</span> demonstração do alerta automático
+            </div>
+            <button id="simulateBtn" class="btn btn-primary px-4 py-2 rounded">
+              Simular divergência
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-5 reveal space-y-4">
+        <div class="card p-6">
+          <div class="data-label mb-4">Lógica do cálculo</div>
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2.5 rounded" style="background: var(--bg-elevated);">
+              <div class="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style="background: var(--bg-hover); color: var(--fg-soft);">1</div>
+              <span class="text-sm" style="color: var(--fg-soft);">Solicitação ONS (Sinapse)</span>
+            </div>
+            <div class="ml-3 h-2 w-px" style="background: var(--border);"></div>
+            <div class="flex items-center gap-3 p-2.5 rounded" style="background: var(--bg-elevated);">
+              <div class="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style="background: var(--bg-hover); color: var(--fg-soft);">2</div>
+              <span class="text-sm" style="color: var(--fg-soft);">Setpoint aplicado no SAGE</span>
+            </div>
+            <div class="ml-3 h-2 w-px" style="background: var(--border);"></div>
+            <div class="flex items-center gap-3 p-2.5 rounded" style="background: rgba(200,160,74,0.1);">
+              <div class="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style="background: var(--primary); color: #0f0f0f;">3</div>
+              <span class="text-sm font-medium" style="color: var(--primary);">Comparação automática</span>
+            </div>
+            <div class="ml-3 h-2 w-px" style="background: var(--border);"></div>
+            <div class="flex items-center gap-3 p-2.5 rounded" style="background: var(--bg-elevated);">
+              <div class="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold" style="background: var(--bg-hover); color: var(--fg-soft);">4</div>
+              <span class="text-sm" style="color: var(--fg-soft);">Resultado + Alerta (se divergente)</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card p-6">
+          <div class="data-label mb-4">Benefícios</div>
+          <div class="space-y-2.5">
+            <div class="flex items-start gap-2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); margin-top: 3px; flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+              <span class="text-sm" style="color: var(--fg-soft);">Evita perda de geração</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); margin-top: 3px; flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+              <span class="text-sm" style="color: var(--fg-soft);">Evita aplicação incorreta do setpoint</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); margin-top: 3px; flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+              <span class="text-sm" style="color: var(--fg-soft);">Garante atendimento ao Procedimento de Rede</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); margin-top: 3px; flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+              <span class="text-sm" style="color: var(--fg-soft);">Identificação imediata de divergências</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HISTÓRICO ============ -->
+<section id="historico" class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-12 gap-8 items-center mb-12">
+      <div class="lg:col-span-5 reveal">
+        <div class="pill pill-info mb-4 inline-flex"><span>05 · Histórico Inteligente</span></div>
+        <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+          Evolução das restrições
+        </h2>
+        <p class="text-base mb-6" style="color: var(--fg-soft);">
+          O gráfico permite acompanhar geração, curtailment e valor solicitado pelo ONS 
+          em uma única visão sincronizada.
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary); margin-top: 3px; flex-shrink: 0;"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            <p class="text-sm" style="color: var(--fg-soft);">Identifica falhas ocorridas em turnos anteriores</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary); margin-top: 3px; flex-shrink: 0;"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            <p class="text-sm" style="color: var(--fg-soft);">Visualiza tendências e padrões operacionais</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary); margin-top: 3px; flex-shrink: 0;"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            <p class="text-sm" style="color: var(--fg-soft);">Nenhuma inconsistência passa despercebida</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary); margin-top: 3px; flex-shrink: 0;"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+            <p class="text-sm" style="color: var(--fg-soft);">Análise pós-operação em qualquer período</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-7 reveal">
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <div>
+              <div class="font-display font-bold text-base text-white">Evolução temporal</div>
+              <div class="text-xs" style="color: var(--fg-muted);" id="chartPeriodLabel">Últimas 24 horas</div>
+            </div>
+            <div class="flex gap-1.5 flex-wrap">
+              <button class="period-btn active" data-period="24h">24h</button>
+              <button class="period-btn" data-period="48h">48h</button>
+              <button class="period-btn" data-period="7d">7 dias</button>
+              <button class="period-btn" data-period="custom">Personalizado</button>
+            </div>
+          </div>
+          
+          <div class="flex gap-4 text-[10px] mb-2">
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm" style="background: var(--primary);"></span><span style="color: var(--fg-soft);">Geração real</span></span>
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm" style="background: var(--accent);"></span><span style="color: var(--fg-soft);">Restrição aplicada</span></span>
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-sm" style="background: var(--alert);"></span><span style="color: var(--fg-soft);">Solicitado ONS</span></span>
+          </div>
+          
+          <canvas id="historyChart" class="w-full" style="height: 260px;"></canvas>
+          
+          <div class="flex justify-between text-[10px] mt-2" style="color: var(--fg-muted);" id="chartXAxis">
+            <span>00h</span><span>06h</span><span>12h</span><span>18h</span><span>24h</span>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-3 mt-6 pt-6" style="border-top: 1px solid var(--border);">
+            <div>
+              <div class="data-label">Geração média</div>
+              <div class="text-lg font-display font-bold live-num text-white" id="statGen">38.2 MW</div>
+            </div>
+            <div>
+              <div class="data-label">Restrição média</div>
+              <div class="text-lg font-display font-bold live-num" style="color: var(--primary);" id="statRes">12.4 MW</div>
+            </div>
+            <div>
+              <div class="data-label">Energia restrita</div>
+              <div class="text-lg font-display font-bold live-num" style="color: var(--alert-soft);" id="statResEnergy">297 MWh</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARQUES ============ -->
+<section id="parques" class="py-24 px-6 lg:px-12" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-info mb-4 inline-flex"><span>06 · Monitoramento por Parque</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Cinco parques, uma visão
+      </h2>
+      <p class="text-base max-w-2xl mx-auto" style="color: var(--fg-soft);">
+        Cada parque apresenta potência, vento, disponibilidade e geração. 
+        Anomalias entre parques vizinhos são identificadas imediatamente.
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4 reveal" id="parkCards"></div>
+    
+    <div class="mt-8 reveal">
+      <div class="card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <div class="data-label">Detalhe · Parque selecionado</div>
+            <div class="font-display font-bold text-lg mt-1 text-white" id="parkDetailName">Santa Beatriz</div>
+          </div>
+          <div class="text-right">
+            <div class="data-label">Status</div>
+            <div class="pill pill-success mt-1"><span class="dot dot-live"></span>Operante</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="p-3 rounded" style="background: var(--bg-elevated);">
+            <div class="data-label">Velocidade do vento</div>
+            <div class="text-lg font-display font-bold live-num text-white" id="parkWind">6.2 m/s</div>
+          </div>
+          <div class="p-3 rounded" style="background: var(--bg-elevated);">
+            <div class="data-label">Geração</div>
+            <div class="text-lg font-display font-bold live-num" style="color: var(--primary);" id="parkGen">6.4 MW</div>
+          </div>
+          <div class="p-3 rounded" style="background: var(--bg-elevated);">
+            <div class="data-label">Aerogeradores</div>
+            <div class="text-lg font-display font-bold live-num" style="color: var(--success);" id="parkAvail">13/13</div>
+          </div>
+          <div class="p-3 rounded" style="background: var(--bg-elevated);">
+            <div class="data-label">Potência nominal</div>
+            <div class="text-lg font-display font-bold live-num text-white" id="parkCap">13.0 MW</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AEROGERADORES ============ -->
+<section class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 reveal">
+        <div class="pill pill-info mb-4 inline-flex"><span>07 · Aerogeradores</span></div>
+        <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+          Disponibilidade em tempo real
+        </h2>
+        <p class="text-base mb-6" style="color: var(--fg-soft);">
+          Além da geração individual, o sistema acompanha potência produzida, 
+          disponibilidade e setpoint aplicado em cada aerogerador.
+        </p>
+        <div class="p-5 rounded-lg" style="background: rgba(200,160,74,0.08); border-left: 3px solid var(--primary);">
+          <div class="font-bold mb-1 text-sm" style="color: var(--primary);">Alerta automático</div>
+          <p class="text-sm" style="color: var(--fg-soft);">
+            Quando a indisponibilidade ultrapassa 10%, o operador é imediatamente 
+            notificado para providenciar o registro conforme Procedimentos de Rede do ONS.
+          </p>
+        </div>
+      </div>
+      
+      <div class="lg:col-span-7 reveal">
+        <div class="card p-6">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="font-display font-bold text-base text-white">Aerogeradores · Santa Beatriz</div>
+              <div class="text-xs" style="color: var(--fg-muted);">5 de 5 operantes · Disponibilidade: 100%</div>
+            </div>
+            <div class="pill pill-success"><span class="dot dot-live"></span>100%</div>
+          </div>
+          
+          <div class="grid grid-cols-5 gap-3" id="turbineGauges"></div>
+          
+          <div class="mt-6 pt-6" style="border-top: 1px solid var(--border);">
+            <div class="data-label mb-3">Threshold de alerta ONS</div>
+            <div class="relative h-2 rounded-sm overflow-hidden" style="background: var(--bg-elevated);">
+              <div class="absolute inset-y-0 left-0" style="width: 10%; background: var(--success);"></div>
+              <div class="absolute inset-y-0" style="left: 10%; right: 0; background: rgba(200,90,74,0.2);"></div>
+              <div class="absolute top-0 bottom-0 w-px" style="left: 10%; background: var(--alert);"></div>
+            </div>
+            <div class="flex justify-between text-[10px] mt-1" style="color: var(--fg-muted);">
+              <span>0%</span>
+              <span style="color: var(--alert); font-weight: 700;">Limite: 10%</span>
+              <span>100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DADOS ELÉTRICOS + MODO CONTROLE ============ -->
+<section class="py-24 px-6 lg:px-12" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-info mb-4 inline-flex"><span>08 · Dados Elétricos e Modo de Controle</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Parâmetros críticos sempre visíveis
+      </h2>
+    </div>
+    
+    <div class="grid lg:grid-cols-3 gap-4 mb-8">
+      <div class="card p-6 reveal card-hover">
+        <div class="data-label mb-3">Tensão · Barra FB</div>
+        <div class="text-2xl font-display font-bold live-num mb-2 text-white">69.2 kV</div>
+        <div class="flex items-center justify-between text-xs">
+          <span style="color: var(--fg-muted);">Faixa: 69.0 - 70.0 kV</span>
+          <span class="pill pill-success">Normal</span>
+        </div>
+        <div class="mt-3 h-1.5 rounded-sm overflow-hidden" style="background: var(--bg-elevated);">
+          <div class="h-full" style="width: 60%; background: var(--success);"></div>
+        </div>
+      </div>
+      
+      <div class="card p-6 reveal card-hover">
+        <div class="data-label mb-3">Potência Reativa</div>
+        <div class="text-2xl font-display font-bold live-num mb-2 text-white">8.4 MVAr</div>
+        <div class="flex items-center justify-between text-xs">
+          <span style="color: var(--fg-muted);">Limites: -10 a +15 MVAr</span>
+          <span class="pill pill-success">Normal</span>
+        </div>
+        <div class="mt-3 h-1.5 rounded-sm overflow-hidden" style="background: var(--bg-elevated);">
+          <div class="h-full" style="width: 45%; background: var(--success);"></div>
+        </div>
+      </div>
+      
+      <div class="card p-6 reveal card-hover">
+        <div class="data-label mb-3">Fator de Potência</div>
+        <div class="text-2xl font-display font-bold live-num mb-2 text-white">0.98</div>
+        <div class="flex items-center justify-between text-xs">
+          <span style="color: var(--fg-muted);">Meta: ≥ 0.95</span>
+          <span class="pill pill-success">OK</span>
+        </div>
+        <div class="mt-3 h-1.5 rounded-sm overflow-hidden" style="background: var(--bg-elevated);">
+          <div class="h-full" style="width: 98%; background: var(--success);"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="reveal">
+      <div class="rounded-lg p-8 relative overflow-hidden" style="background: var(--bg-elevated); border: 1px solid var(--border);">
+        <div class="grid lg:grid-cols-2 gap-8 items-center">
+          <div>
+            <div class="data-label mb-3" style="color: var(--primary);">09 · Modo de Controle</div>
+            <h3 class="font-display font-bold text-2xl mb-4 text-white">
+              Monitoramento permanente do<br>Modo de Controle
+            </h3>
+            <p class="text-sm leading-relaxed mb-6" style="color: var(--fg-soft);">
+              Conforme a filosofia operacional do Complexo Babilônia, o parque deve operar 
+              em <strong style="color: var(--primary);">Controle de Tensão</strong>. 
+              Uma alteração inadvertida pode provocar desvios, atuação de proteções e riscos operativos.
+            </p>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2" style="color: var(--fg-soft);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+                <span class="text-sm">Evita violação dos limites operativos</span>
+              </div>
+              <div class="flex items-center gap-2" style="color: var(--fg-soft);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+                <span class="text-sm">Evita operação inadequada</span>
+              </div>
+              <div class="flex items-center gap-2" style="color: var(--fg-soft);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--success); flex-shrink: 0;"><path d="M5 12l5 5L20 7"/></svg>
+                <span class="text-sm">Aumenta a segurança operacional</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex justify-center">
+            <div class="w-48 h-48 rounded-full flex items-center justify-center" style="background: var(--bg-card); border: 2px solid var(--primary);">
+              <div class="text-center">
+                <div class="data-label mb-2">Modo atual</div>
+                <div class="font-display font-bold text-base leading-tight text-white">CONTROLE<br>DE TENSÃO</div>
+                <div class="mt-3 inline-flex items-center gap-1.5 px-2 py-1 rounded" style="background: rgba(90,156,106,0.15);">
+                  <span class="dot dot-live" style="color: var(--success);"></span>
+                  <span class="text-[9px] font-bold" style="color: var(--success);">CONFORME</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ANTES × DEPOIS ============ -->
+<section class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-info mb-4 inline-flex"><span>10 · Transformação</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Antes × Depois
+      </h2>
+    </div>
+    
+    <div class="card overflow-hidden reveal">
+      <div class="grid md:grid-cols-2">
+        <div class="p-8" style="border-right: 1px solid var(--border);">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-9 h-9 rounded flex items-center justify-center" style="background: rgba(200,90,74,0.15); color: var(--alert-soft);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </div>
+            <div>
+              <div class="data-label" style="color: var(--alert-soft);">Antes</div>
+              <div class="font-display font-bold text-base text-white">Operação dispersa</div>
+            </div>
+          </div>
+          
+          <div class="space-y-2.5">
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg-soft);">Diversas telas simultâneas</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg-soft);">Comparação manual de valores</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg-soft);">Alto risco de erro humano</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg-soft);">Análise histórica difícil</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg-soft);">Elevada carga operacional</div>
+          </div>
+        </div>
+        
+        <div class="p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-9 h-9 rounded flex items-center justify-center" style="background: rgba(90,156,106,0.15); color: var(--success);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5L20 7"/></svg>
+            </div>
+            <div>
+              <div class="data-label" style="color: var(--success);">Depois</div>
+              <div class="font-display font-bold text-base text-white">Operação inteligente</div>
+            </div>
+          </div>
+          
+          <div class="space-y-2.5">
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg);">Uma única interface integrada</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg);">Comparação automática em tempo real</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg);">Alertas automáticos de divergência</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg);">Histórico integrado e pesquisável</div>
+            <div class="p-3 rounded text-sm" style="background: var(--bg-elevated); color: var(--fg);">Operação simplificada e padronizada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BENEFÍCIOS ============ -->
+<section id="beneficios" class="py-24 px-6 lg:px-12" style="background: var(--bg-card);">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-success mb-4 inline-flex"><span>11 · Benefícios Alcançados</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Ganhos operacionais
+      </h2>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 reveal">
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(200,90,74,0.1); color: var(--alert-soft);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Segurança Operacional</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Redução significativa da possibilidade de erro humano nas decisões operativas.</p>
+      </div>
+      
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(90,156,106,0.1); color: var(--success);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Confiabilidade</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Atendimento permanente aos Procedimentos de Rede do ONS.</p>
+      </div>
+      
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(200,160,74,0.1); color: var(--primary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Eficiência</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Comparações automáticas em tempo real, eliminando análise manual.</p>
+      </div>
+      
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(74,156,138,0.1); color: var(--accent-soft);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Disponibilidade</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Identificação rápida de indisponibilidades e alertas de registro no ONS.</p>
+      </div>
+      
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(200,160,74,0.1); color: var(--primary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0112 4.5v15a2.5 2.5 0 01-5 0v-15A2.5 2.5 0 019.5 2z"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Produtividade</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Menor carga cognitiva do operador, foco na decisão e não na coleta.</p>
+      </div>
+      
+      <div class="card p-6 card-hover">
+        <div class="w-10 h-10 rounded flex items-center justify-center mb-4" style="background: rgba(74,156,138,0.1); color: var(--accent-soft);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="font-display font-bold text-lg mb-2 text-white">Padronização</div>
+        <p class="text-sm" style="color: var(--fg-soft);">Mesma referência operacional durante todos os turnos, sem variação individual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVOLUÇÕES FUTURAS ============ -->
+<section class="py-24 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12 reveal">
+      <div class="pill pill-info mb-4 inline-flex"><span>12 · Próximos Passos</span></div>
+      <h2 class="font-display font-bold text-3xl lg:text-4xl leading-tight mb-4 text-white">
+        Evoluções futuras
+      </h2>
+      <p class="text-base max-w-2xl mx-auto" style="color: var(--fg-soft);">
+        Próximos módulos em desenvolvimento para ampliar ainda mais a inteligência operacional.
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-3 reveal">
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15s2-3 9-3 9 3 9 3M3 9s2-3 9-3 9 3 9 3"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Previsão de vento</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Integração com modelos meteorológicos</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Despacho automático</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Aplicação automática de setpoints</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Alarmes inteligentes</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Notificações contextuais</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zM2 12h20"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">IA para sugestões</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Recomendações operativas</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Indicadores KPI</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Métricas de desempenho</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Histórico de eventos</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Auditoria completa</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="12" y="6" width="3" height="12"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Dashboard corporativo</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Visão executiva</div>
+      </div>
+      
+      <div class="card p-5 card-hover">
+        <div class="w-9 h-9 rounded flex items-center justify-center mb-3" style="background: var(--bg-elevated); color: var(--primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 7v5l3 3"/></svg>
+        </div>
+        <div class="font-display font-bold text-sm mb-1 text-white">Análise preditiva</div>
+        <div class="text-xs" style="color: var(--fg-muted);">Antecipação de falhas</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENCERRAMENTO ============ -->
+<section class="closing-bg relative py-32 px-6 lg:px-12">
+  <div class="relative max-w-4xl mx-auto text-center reveal">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded mb-8" style="background: rgba(200,160,74,0.1); border: 1px solid rgba(200,160,74,0.2);">
+      <span class="dot dot-live" style="color: var(--primary);"></span>
+      <span class="text-[10px] font-bold tracking-wider uppercase" style="color: var(--primary);">13 · Encerramento</span>
+    </div>
+    
+    <blockquote class="font-display font-medium text-xl lg:text-3xl leading-tight mb-10 text-white">
+      "O sistema transforma <span style="color: var(--primary);">dados dispersos</span> em 
+      <span style="color: var(--primary);">informação operacional confiável</span>, 
+      permitindo decisões mais rápidas, seguras e aderentes aos Procedimentos de Rede."
+    </blockquote>
+    
+    <div class="my-10" style="height: 1px; background: var(--border);"></div>
+    
+    <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+      <div>
+        <div class="text-2xl font-display font-bold" style="color: var(--primary);">5</div>
+        <div class="data-label mt-1">Parques integrados</div>
+      </div>
+      <div>
+        <div class="text-2xl font-display font-bold" style="color: var(--primary);">65</div>
+        <div class="data-label mt-1">Aerogeradores monitorados</div>
+      </div>
+      <div>
+        <div class="text-2xl font-display font-bold" style="color: var(--primary);">100%</div>
+        <div class="data-label mt-1">Aderência ONS</div>
+      </div>
+    </div>
+    
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-3">
+      <a href="#solucao" class="btn btn-primary px-6 py-3 rounded inline-flex items-center gap-2">
+        Rever funcionalidades
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#" class="btn btn-outline px-6 py-3 rounded inline-flex items-center gap-2" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+        Voltar ao início
+      </a>
+    </div>
+    
+    <div class="mt-16 pt-8 flex flex-wrap items-center justify-between gap-4 text-xs" style="border-top: 1px solid var(--border); color: var(--fg-muted);">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded flex items-center justify-center" style="background: var(--primary);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#0f0f0f" stroke-width="2" class="w-3.5 h-3.5"><path d="M12 2v20M12 7l6-2M12 7l-6-2M12 13l8 2M12 13l-8 2"/></svg>
+        </div>
+        <span class="font-bold text-white">Complexo Eólico Babilônia</span>
+        <span>· Sistema Inteligente de Apoio à Operação</span>
+      </div>
+      <div>SAGE × Sinapse ONS · Tempo Real</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIDE PANEL ============ -->
+<div class="panel-backdrop" id="panelBackdrop"></div>
+<aside class="side-panel" id="sidePanel">
+  <div class="p-8">
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded flex items-center justify-center font-display font-bold text-sm" id="panelNumber" style="background: var(--primary); color: #0f0f0f;">1</div>
+        <div class="data-label">Hotspot</div>
+      </div>
+      <button id="closePanel" class="w-8 h-8 rounded flex items-center justify-center" style="color: var(--fg-soft); background: var(--bg-elevated);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    
+    <h3 class="font-display font-bold text-xl mb-4 text-white" id="panelTitle"></h3>
+    <p class="text-sm leading-relaxed mb-6" id="panelDescription" style="color: var(--fg-soft);"></p>
+    
+    <div class="space-y-3">
+      <div class="p-4 rounded" style="background: var(--bg-elevated);">
+        <div class="data-label mb-1">Origem do dado</div>
+        <div class="text-sm font-semibold" id="panelOrigin" style="color: var(--fg);"></div>
+      </div>
+      <div class="p-4 rounded" style="background: rgba(200,160,74,0.08); border: 1px solid rgba(200,160,74,0.15);">
+        <div class="data-label mb-1" style="color: var(--primary);">Benefício operacional</div>
+        <div class="text-sm font-semibold" id="panelBenefit" style="color: var(--primary-soft);"></div>
+      </div>
+    </div>
+    
+    <div class="mt-8 pt-6 flex items-center justify-between" style="border-top: 1px solid var(--border);">
+      <button id="prevHotspot" class="text-xs font-semibold flex items-center gap-1.5" style="color: var(--fg-soft);">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Anterior
+      </button>
+      <div class="text-xs font-semibold" style="color: var(--fg-muted);">
+        <span id="panelCounter">1 / 7</span>
+      </div>
+      <button id="nextHotspot" class="text-xs font-semibold flex items-center gap-1.5" style="color: var(--fg-soft);">
+        Próximo
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+// Scroll progress
+const scrollProgress = document.getElementById('scrollProgress');
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('section[id]');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  scrollProgress.style.width = (scrollTop / docHeight * 100) + '%';
+  
+  let current = '';
+  sections.forEach(s => {
+    if (s.offsetTop - 100 <= scrollTop) current = s.id;
+  });
+  navLinks.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+
+// Reveal animations
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(r => revealObserver.observe(r));
+
+// Hotspot data
+const hotspotData = {
+  1: {
+    title: "Solicitação ONS · Sinapse",
+    description: "Valor de curtailment solicitado pelo ONS em tempo real, consultado automaticamente via API do Sinapse. Esta é a referência que deve ser aplicada no SAGE.",
+    origin: "API Sinapse (ONS)",
+    benefit: "Base de referência para comparação automática com o SAGE."
+  },
+  2: {
+    title: "Setpoint aplicado · SAGE",
+    description: "Valor efetivamente aplicado no Sistema Supervisório SAGE. O sistema compara continuamente este valor com a solicitação do ONS e alerta em caso de divergência.",
+    origin: "API SAGE (SCADA)",
+    benefit: "Garante que a restrição solicitada foi corretamente aplicada."
+  },
+  3: {
+    title: "Geração Total do Complexo",
+    description: "Soma da geração de todos os 65 aerogeradores dos 5 parques do Complexo Babilônia, atualizada continuamente.",
+    origin: "API SAGE · Cálculo agregado",
+    benefit: "Visão imediata da produtividade do complexo."
+  },
+  4: {
+    title: "Modo de Controle · Tensão",
+    description: "Conforme a filosofia operacional, o parque deve operar em Controle de Tensão. Uma alteração inadvertida é destacada imediatamente pelo sistema.",
+    origin: "API SAGE · Status do regulador",
+    benefit: "Evita operação inadequada e atuação de proteções."
+  },
+  5: {
+    title: "Gráfico de Evolução Temporal",
+    description: "Visualização sincronizada de geração real, restrição aplicada e valor solicitado pelo ONS. Permite identificar falhas em turnos anteriores.",
+    origin: "Motor de cálculo · Histórico",
+    benefit: "Nenhuma inconsistência operacional passa despercebida."
+  },
+  6: {
+    title: "Disponibilidade dos Aerogeradores",
+    description: "Acompanhamento individual de cada aerogerador. Quando a indisponibilidade ultrapassa 10%, o sistema alerta para registro no ONS conforme Procedimentos de Rede.",
+    origin: "API SAGE · Status por turbina",
+    benefit: "Identificação rápida de indisponibilidades e conformidade com ONS."
+  },
+  7: {
+    title: "Dados Elétricos Centralizados",
+    description: "Tensão, potência ativa, reativa e fator de potência centralizados em uma única visão. Todos os parâmetros críticos permanentemente visíveis.",
+    origin: "API SAGE · Medidores elétricos",
+    benefit: "Visão elétrica completa sem alternar entre telas."
+  }
+};
+
+const sidePanel = document.getElementById('sidePanel');
+const panelBackdrop = document.getElementById('panelBackdrop');
+const closePanel = document.getElementById('closePanel');
+let currentHotspot = 1;
+
+function openHotspot(id) {
+  currentHotspot = id;
+  const data = hotspotData[id];
+  if (!data) return;
+  
+  document.getElementById('panelNumber').textContent = id;
+  document.getElementById('panelTitle').textContent = data.title;
+  document.getElementById('panelDescription').textContent = data.description;
+  document.getElementById('panelOrigin').textContent = data.origin;
+  document.getElementById('panelBenefit').textContent = data.benefit;
+  document.getElementById('panelCounter').textContent = id + ' / 7';
+  
+  sidePanel.classList.add('open');
+  panelBackdrop.classList.add('open');
+  
+  document.querySelectorAll('.hotspot').forEach(h => {
+    h.classList.toggle('active', parseInt(h.dataset.hotspot) === id);
+  });
+}
+
+function closePanelFn() {
+  sidePanel.classList.remove('open');
+  panelBackdrop.classList.remove('open');
+  document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+}
+
+document.querySelectorAll('.hotspot').forEach(h => {
+  h.addEventListener('click', () => openHotspot(parseInt(h.dataset.hotspot)));
+});
+closePanel.addEventListener('click', closePanelFn);
+panelBackdrop.addEventListener('click', closePanelFn);
+
+document.getElementById('prevHotspot').addEventListener('click', () => {
+  const prev = currentHotspot > 1 ? currentHotspot - 1 : 7;
+  openHotspot(prev);
+});
+document.getElementById('nextHotspot').addEventListener('click', () => {
+  const next = currentHotspot < 7 ? currentHotspot + 1 : 1;
+  openHotspot(next);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePanelFn();
+  if (sidePanel.classList.contains('open')) {
+    if (e.key === 'ArrowLeft') document.getElementById('prevHotspot').click();
+    if (e.key === 'ArrowRight') document.getElementById('nextHotspot').click();
+  }
+});
+
+// Mini chart
+(function renderMiniChart() {
+  const container = document.getElementById('miniChart');
+  if (!container) return;
+  const hours = 24;
+  for (let i = 0; i < hours; i++) {
+    const gen = Math.sin(i / 24 * Math.PI * 1.5) * 12 + 28 + Math.random() * 4;
+    const res = Math.max(0, Math.sin(i / 24 * Math.PI) * 6 + Math.random() * 3);
+    const total = 45;
+    const genH = (gen / total * 100);
+    const resH = (res / total * 100);
+    
+    const bar = document.createElement('div');
+    bar.className = 'relative flex-1';
+    bar.style.height = '100%';
+    bar.style.minWidth = '3px';
+    bar.innerHTML = `
+      <div class="absolute bottom-0 left-0 right-0" style="height: ${genH}%; background: var(--primary); opacity: 0.85;"></div>
+      <div class="absolute bottom-0 left-0 right-0" style="height: ${resH}%; background: var(--accent); opacity: 0.6;"></div>
+    `;
+    container.appendChild(bar);
+  }
+})();
+
+// Curtailment simulation
+const simulateBtn = document.getElementById('simulateBtn');
+let simulating = false;
+simulateBtn.addEventListener('click', () => {
+  simulating = !simulating;
+  const sageValue = document.getElementById('sageValue');
+  const sageBox = document.getElementById('sageBox');
+  const statusBanner = document.getElementById('statusBanner');
+  const statusIcon = document.getElementById('statusIcon');
+  const statusTitle = document.getElementById('statusTitle');
+  const statusDesc = document.getElementById('statusDesc');
+  const statusPill = document.getElementById('statusPill');
+  const compareStatus = document.getElementById('compareStatus');
+  
+  if (simulating) {
+    sageValue.textContent = '38.5';
+    sageValue.style.color = 'var(--alert-soft)';
+    sageBox.style.borderColor = 'var(--alert)';
+    sageBox.style.background = 'rgba(200,90,74,0.08)';
+    statusBanner.style.background = 'rgba(200,90,74,0.1)';
+    statusBanner.style.borderColor = 'rgba(200,90,74,0.3)';
+    statusIcon.style.background = 'var(--alert)';
+    statusIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg>';
+    statusTitle.style.color = 'var(--alert-soft)';
+    statusTitle.textContent = 'Divergência detectada';
+    statusDesc.textContent = 'Setpoint SAGE (38.5 MW) ≠ Solicitado ONS (43.0 MW)';
+    statusPill.className = 'pill pill-alert';
+    statusPill.innerHTML = '<span class="dot dot-live"></span>Alerta';
+    compareStatus.textContent = 'Divergente';
+    compareStatus.style.color = 'var(--alert-soft)';
+    simulateBtn.textContent = 'Restaurar';
+  } else {
+    sageValue.textContent = '43.0';
+    sageValue.style.color = 'var(--primary)';
+    sageBox.style.borderColor = 'var(--border)';
+    sageBox.style.background = 'var(--bg-elevated)';
+    statusBanner.style.background = 'rgba(90,156,106,0.1)';
+    statusBanner.style.borderColor = 'rgba(90,156,106,0.2)';
+    statusIcon.style.background = 'var(--success)';
+    statusIcon.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>';
+    statusTitle.style.color = 'var(--success)';
+    statusTitle.textContent = 'Valores coincidentes';
+    statusDesc.textContent = 'Setpoint aplicado corretamente no SAGE';
+    statusPill.className = 'pill pill-success';
+    statusPill.innerHTML = '<span class="dot dot-live"></span>OK';
+    compareStatus.textContent = 'Sincronizado';
+    compareStatus.style.color = 'var(--success)';
+    simulateBtn.textContent = 'Simular divergência';
+  }
+});
+
+// History chart
+const canvas = document.getElementById('historyChart');
+const ctx = canvas.getContext('2d');
+let currentPeriod = '24h';
+
+function generateData(period) {
+  let points, labels;
+  if (period === '24h') { points = 24; labels = ['00h','06h','12h','18h','24h']; }
+  else if (period === '48h') { points = 48; labels = ['-48h','-36h','-24h','-12h','Agora']; }
+  else if (period === '7d') { points = 84; labels = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']; }
+  else { points = 24; labels = ['Personalizado']; }
+  
+  const data = { geracao: [], restricao: [], solicitado: [] };
+  for (let i = 0; i < points; i++) {
+    const t = i / points;
+    const base = 32 + Math.sin(t * Math.PI * 2) * 10 + Math.sin(t * Math.PI * 6) * 3;
+    data.geracao.push(Math.max(5, base + (Math.random() - 0.5) * 3));
+    data.restricao.push(Math.max(0, Math.sin(t * Math.PI * 1.5) * 7 + (Math.random() - 0.5) * 2));
+    data.solicitado.push(Math.max(0, Math.sin(t * Math.PI * 1.5) * 8 + 2 + (Math.random() - 0.5) * 2));
+  }
+  return { data, labels };
+}
+
+function drawChart(period) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  
+  const w = rect.width;
+  const h = rect.height;
+  const padding = { top: 10, right: 10, bottom: 10, left: 40 };
+  const chartW = w - padding.left - padding.right;
+  const chartH = h - padding.top - padding.bottom;
+  
+  const { data, labels } = generateData(period);
+  const maxVal = 50;
+  
+  ctx.clearRect(0, 0, w, h);
+  
+  ctx.strokeStyle = '#2a2a2a';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + (chartH / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(w - padding.right, y);
+    ctx.stroke();
+  }
+  
+  ctx.fillStyle = '#707070';
+  ctx.font = '10px Inter';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + (chartH / 4) * i;
+    const val = Math.round(maxVal - (maxVal / 4) * i);
+    ctx.fillText(val + ' MW', padding.left - 5, y + 3);
+  }
+  
+  const drawLine = (values, color, fill = false) => {
+    ctx.beginPath();
+    values.forEach((v, i) => {
+      const x = padding.left + (chartW / (values.length - 1)) * i;
+      const y = padding.top + chartH - (v / maxVal) * chartH;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    if (fill) {
+      ctx.lineTo(padding.left + chartW, padding.top + chartH);
+      ctx.lineTo(padding.left, padding.top + chartH);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
+      grad.addColorStop(0, color + '30');
+      grad.addColorStop(1, color + '00');
+      ctx.fillStyle = grad;
+      ctx.fill();
+    } else {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  };
+  
+  drawLine(data.geracao, '#c8a04a', true);
+  drawLine(data.geracao, '#c8a04a');
+  drawLine(data.solicitado, '#c85a4a');
+  drawLine(data.restricao, '#4a9c8a');
+  
+  const avgGen = data.geracao.reduce((a,b) => a+b, 0) / data.geracao.length;
+  const avgRes = data.restricao.reduce((a,b) => a+b, 0) / data.restricao.length;
+  const resEnergy = avgRes * data.geracao.length;
+  
+  document.getElementById('statGen').textContent = avgGen.toFixed(1) + ' MW';
+  document.getElementById('statRes').textContent = avgRes.toFixed(1) + ' MW';
+  document.getElementById('statResEnergy').textContent = resEnergy.toFixed(0) + ' MWh';
+  
+  const xAxis = document.getElementById('chartXAxis');
+  xAxis.innerHTML = labels.map(l => `<span>${l}</span>`).join('');
+  
+  const labelMap = { '24h': 'Últimas 24 horas', '48h': 'Últimas 48 horas', '7d': 'Últimos 7 dias', 'custom': 'Período personalizado' };
+  document.getElementById('chartPeriodLabel').textContent = labelMap[period];
+}
+
+drawChart('24h');
+window.addEventListener('resize', () => drawChart(currentPeriod));
+
+document.querySelectorAll('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentPeriod = btn.dataset.period;
+    drawChart(currentPeriod);
+  });
+});
+
+// Park data — nomes corrigidos conforme sistema real
+const parks = [
+  { name: 'Santa Beatriz', wind: 6.2, gen: 6.4, avail: '13/13', cap: 13.0, status: 'ok' },
+  { name: 'São Roque', wind: 8.7, gen: 7.8, avail: '13/13', cap: 13.0, status: 'ok' },
+  { name: 'Boa Vista', wind: 7.4, gen: 6.9, avail: '12/13', cap: 13.0, status: 'warn' },
+  { name: 'Santa Tereza', wind: 8.1, gen: 7.2, avail: '13/13', cap: 13.0, status: 'ok' },
+  { name: 'Bom Pastor', wind: 7.8, gen: 6.8, avail: '13/13', cap: 13.0, status: 'ok' }
+];
+
+const parkCards = document.getElementById('parkCards');
+parks.forEach((p, idx) => {
+  const isWarn = p.status === 'warn';
+  const card = document.createElement('div');
+  card.className = 'park-card card p-4' + (idx === 0 ? ' selected' : '');
+  card.innerHTML = `
+    <div class="flex items-center justify-between mb-3">
+      <div class="font-display font-bold text-sm text-white">${p.name}</div>
+      <span class="pill ${isWarn ? 'pill-alert' : 'pill-success'}">${isWarn ? 'Atenção' : 'OK'}</span>
+    </div>
+    <div class="space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-[10px]" style="color: var(--fg-muted);">Vento</span>
+        <span class="text-xs font-bold live-num text-white">${p.wind} m/s</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-[10px]" style="color: var(--fg-muted);">Geração</span>
+        <span class="text-xs font-bold live-num" style="color: var(--primary);">${p.gen} MW</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-[10px]" style="color: var(--fg-muted);">Disponibilidade</span>
+        <span class="text-xs font-bold live-num" style="color: ${isWarn ? 'var(--primary)' : 'var(--success)'};">${p.avail}</span>
+      </div>
+    </div>
+    <div class="mt-3 h-1 rounded-sm overflow-hidden" style="background: var(--bg-elevated);">
+      <div class="h-full" style="width: ${(p.gen/p.cap*100)}%; background: ${isWarn ? 'var(--primary)' : 'var(--success)'};"></div>
+    </div>
+  `;
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.park-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('parkDetailName').textContent = p.name;
+    document.getElementById('parkWind').textContent = p.wind + ' m/s';
+    document.getElementById('parkGen').textContent = p.gen + ' MW';
+    document.getElementById('parkAvail').textContent = p.avail;
+    document.getElementById('parkCap').textContent = p.cap.toFixed(1) + ' MW';
+  });
+  parkCards.appendChild(card);
+});
+
+// Turbine gauges
+const turbines = [
+  { id: 'AC03', power: 6.4, status: 'ok', count: '13/13' },
+  { id: 'AC04', power: 6.3, status: 'ok', count: '13/13' },
+  { id: 'AC05', power: 5.9, status: 'warn', count: '12/13' },
+  { id: 'AC06', power: 6.4, status: 'ok', count: '13/13' },
+  { id: 'AC07', power: 6.3, status: 'ok', count: '13/13' }
+];
+
+const turbineContainer = document.getElementById('turbineGauges');
+turbines.forEach(t => {
+  const pct = t.power / 13 * 100;
+  const radius = 28;
+  const circ = 2 * Math.PI * radius;
+  const offset = circ - (pct / 100) * circ * 0.75;
+  const isWarn = t.status === 'warn';
+  
+  const div = document.createElement('div');
+  div.className = 'text-center';
+  div.innerHTML = `
+    <div class="relative inline-block">
+      <svg width="76" height="76" viewBox="0 0 76 76">
+        <circle cx="38" cy="38" r="${radius}" fill="none" stroke-width="5" 
+                stroke="#2a2a2a" 
+                stroke-dasharray="${circ * 0.75} ${circ}"
+                stroke-dashoffset="0"
+                transform="rotate(135 38 38)"
+                stroke-linecap="round"/>
+        <circle cx="38" cy="38" r="${radius}" fill="none" stroke-width="5" 
+                stroke="${isWarn ? '#c8a04a' : '#5a9c6a'}"
+                stroke-dasharray="${circ * 0.75} ${circ}"
+                stroke-dashoffset="${offset}"
+                transform="rotate(135 38 38)"
+                stroke-linecap="round"
+                style="transition: stroke-dashoffset 1s ease;"/>
+      </svg>
+      <div class="absolute inset-0 flex flex-col items-center justify-center">
+        <div class="font-display font-bold text-sm live-num text-white">${t.power}</div>
+        <div class="text-[8px]" style="color: var(--fg-muted);">MW</div>
+      </div>
+    </div>
+    <div class="font-display font-bold text-xs mt-1 text-white">${t.id}</div>
+    <div class="text-[9px] font-semibold" style="color: ${isWarn ? 'var(--primary)' : 'var(--success)'};">${t.count}</div>
+  `;
+  turbineContainer.appendChild(div);
+});
+
+// Live number subtle fluctuation
+function liveSim() {
+  const heroGen = document.getElementById('heroGen');
+  if (heroGen) {
+    const base = 39.9;
+    const v = (base + (Math.random() - 0.5) * 0.6).toFixed(1);
+    heroGen.textContent = v;
+  }
+  const heroCap = document.getElementById('heroCap');
+  if (heroCap) {
+    const base = 28.9;
+    const v = (base + (Math.random() - 0.5) * 1.5).toFixed(1);
+    heroCap.textContent = v;
+  }
+}
+setInterval(liveSim, 3500);
+</script>
+
+</body>
+</html>
